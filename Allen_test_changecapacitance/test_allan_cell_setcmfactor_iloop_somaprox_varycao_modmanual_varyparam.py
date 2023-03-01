@@ -14,8 +14,8 @@ import LFPy
 t0 = tm.clock()
 ## Choose model(s) to test:
 #testmodel = 488462965 
-#testmodel = 478513407 
-testmodel = 478513437 
+#testmodel = 478513407
+testmodel = 478513437
 testmodelname = 'neur_%i' % testmodel
 all_models    = [testmodelname]
 
@@ -68,9 +68,9 @@ elif testmodel==478513407:
     cm_dend = 1.0
     cm_axon = 1.0
 elif testmodel==480633479:
-    cm_soma = 0.704866 
-    cm_dend = 0.704866 
-    cm_axon = 0.704866 
+    cm_soma = 0.704866
+    cm_dend = 0.704866
+    cm_axon = 0.704866
 elif testmodel==478513437:
     cm_soma = 2.34539964752
     cm_dend = 2.34539964752
@@ -87,14 +87,14 @@ elif testmodel==485694403:
 ### Changing values:
 # Changing values of membrane capacitance:
 cm_changecmf = 1.5
-changedg     = 10.0
-setcao       = 20.0 #2000.0 #0.02
+changedg     = 4.0
+setcao       = 20.0
 namestring = '_cao'+str(setcao)
 
 varymech = 'None' # 'Na' # 'K' # 'pas'
 varyE_bool = False # True # 
 if varymech=='Na':
-    varyE = 63 #[40,50,53,60,70]
+    varyE = 63 #[40,50,53,60,70] 
     namestring = namestring + 'ENa'+str(varyE)
 elif varymech=='K':
     varyE = -107 
@@ -108,7 +108,7 @@ varygbool = True # False #
 varyIh       = False
 vary_NaV     = False 
 vary_Kd      = False
-vary_Kv2like = False 
+vary_Kv2like = True # False 
 vary_Kv3_1   = False
 vary_K_T     = False
 vary_Im_v2   = False
@@ -142,18 +142,16 @@ if vary_Ca_LVA==True:
 if vary_gpas==True: 
     namestring = namestring + '_gpas'+str(changedg)+'p'
 
-# "gbar_Ih"	"gbar_NaV"	"gbar_Kd"	"gbar_Kv2like"		"gbar_Kv3_1"	"gbar_K_T"	"gbar_Im_v2"	"gbar_SK"	"gbar_Ca_HVA"		"gbar_Ca_LVA"	
-# "g_pas" (set individually in soma, dend, axon)
 # Change current:
-idur = 2000 # ms # 
+idur = 2000 # ms
 if testmodel==478513437:
     iamps = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5,0.51,0.52,0.53,0.54,0.55,0.56,0.57,0.58,0.59,0.6,0.61,0.62,0.63,0.64,0.65,0.66,0.67,0.68,0.69,0.7,0.71,0.72,0.73,0.74,0.75,0.76,0.77,0.78,0.79,0.8]
 elif testmodel==478513407:
     iamps = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5]
 elif testmodel==488462965:
     iamps = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.2,0.21,0.22,0.23,0.24,0.25,0.26,0.27,0.28,0.29,0.3,0.31,0.32,0.33,0.34,0.35,0.36,0.37,0.38,0.39,0.4,0.41,0.42,0.43,0.44,0.45,0.46,0.47,0.48,0.49,0.5,0.51,0.52,0.53,0.54,0.55,0.56,0.57,0.58,0.59,0.6,0.61,0.62,0.63,0.64,0.65,0.66,0.67,0.68,0.69,0.7]
-idelay = 100  #     ms #
-afteri = 100  #     ms # 
+idelay = 100  # ms
+afteri = 100  # ms
 
 tstop_i = idur+afteri+idelay
 
@@ -170,8 +168,7 @@ def return_allen_cell_model(model_folder):
     v_init = params["conditions"][0]["v_init"]
     active_mechs = params["genome"]
     neuron.h.celsius = celsius
-
-
+    
     # Define cell parameters
     cell_parameters = {
         'morphology': join(model_folder, 'reconstruction.swc'),
@@ -179,10 +176,9 @@ def return_allen_cell_model(model_folder):
         'passive': False,   # turn on NEURONs passive mechanism for all sections
         'nsegs_method': 'fixed_length', # spatial discretization method
         'max_nsegs_length': 20.,
-        #'lambda_f' : 200.,           # frequency where length constants are computed
-        'dt': 2.**-7,      # simulation time step size
+        'dt': 2.**-7,         # simulation time step size
         'tstart': -600.,      # start time of simulation, recorders start at t=0
-        'tstop': tstop_i,     # stop simulation at tstop_i ms.
+        'tstop': tstop_i,     # stop simulation at this time.
         'custom_code': ['remove_axon.hoc']
     }
 
@@ -190,11 +186,11 @@ def return_allen_cell_model(model_folder):
     cell.set_rotation(z=np.pi/1.25)
 
     pnncutoff = 0
-    for sec in neuron.h.allsec(): # Extracting soma length
+    for sec in neuron.h.allsec():
         sectype = sec.name().split("[")[0]
         if sectype=="soma":
             somasec = sec
-            pnncutoff = 3.5*sec.L 
+            pnncutoff = 3.5*sec.L
 
     for sec in neuron.h.allsec():
         sec.insert("pas")
@@ -205,10 +201,9 @@ def return_allen_cell_model(model_folder):
         cm_new = cm_base*cm_changecmf
         for sec_dict in active_mechs:
             if sec_dict["section"] == sectype:
-                if sectype=="soma": # Works
+                if sectype=="soma":
                     exec("sec.cm = {}".format(cm_new))
-                if sectype=="dend": # Works
-                    ### TEST FOR DISTANCE 
+                if sectype=="dend":
                     section = sec
                     dist = neuron.h.distance(somasec(0.5),section(1))
                     if dist<=pnncutoff:
@@ -219,7 +214,7 @@ def return_allen_cell_model(model_folder):
                             if neuron.h.distance(somasec(0.5),seg)<=pnncutoff:
                                 exec("seg.cm = {}".format(cm_new)) # 
                                 
-                if sectype=="axon": # Works
+                if sectype=="axon":
                     exec("sec.cm = {}".format(cm_axon))
                 if not sec_dict["mechanism"] == "":
                     sec.insert(sec_dict["mechanism"])
@@ -347,12 +342,12 @@ for iamp in iamps:
         plt.legend(loc='upper right')
         fig.savefig(join("figures", "%i" % testmodel,"current_idur%i_iamp" % idur + str(iamp),  '{}_changecmf{}_somaprox_vinit{}_addedRa_big_man.png'.format(namestring,cm_changecmf,v_init)))
         
-        outfilename = "figures/%i/current_idur%i_iamp" % (testmodel,idur) + str(iamp)+"/"+namestring+"_changecmf" + str(cm_changecmf) + "_somaprox_vinit"+str(v_init)+"_addedRa_man.txt"
+        outfilename = "figures/%i/current_idur%i_iamp" % (testmodel,idur) + str(iamp)+"/"+namestring+"_changecmf" + str(cm_changecmf) + "_somaprox_vinit"+str(v_init)+"_addedRa.txt"
         outfile = open(outfilename,'w')
         vmem_soma = cell.vmem[0,:]
-        Ca_soma   = cell.rec_variables['cai'][0, :] 
+        Ca_soma   = cell.rec_variables['cai'][0, :]
         
-        time = cell.tvec # time
+        time = cell.tvec
         Nt   = len(time)
         
         for i in range(Nt):
@@ -360,26 +355,10 @@ for iamp in iamps:
         outfile.close()    
         
         vmax = max(vmem_soma) 
-        vmin = min(vmem_soma) 
-        deltav = vmax-vmin
-        vthr  = -40 # If there is a peak above this value, we count it
-        vprev = vthr-40 # A peak never kicks in at initiation, even if I change vthr
-        Npeaks = 0
-        for i in range (1,len(vmem_soma)-1):  
-            if vmem_soma[i-1]<vmem_soma[i] and vmem_soma[i+1]<vmem_soma[i] and vmem_soma[i]>vthr:
-                Npeaks+=1
-        print(Npeaks, ' peaks for model ', testmodel, ', current ', iamp)
-        print('iamps:',iamps)
-        print('vmax:', vmax)
 
         outfilename = "figures/%i/current_idur%i_iamp" % (testmodel,idur) + str(iamp)+"/"+namestring+"_changecmf" + str(cm_changecmf) + "_somaprox_vinit"+str(v_init)+"_addedRa_vmax_man.txt"
         outfile = open(outfilename,'w') 
         outfile.write('%.5f' % vmax)
-        outfile.close()   
-        
-        outfilename = "figures/%i/current_idur%i_iamp" % (testmodel,idur) + str(iamp)+"/"+namestring+"_changecmf" + str(cm_changecmf) + "_somaprox_vinit"+str(v_init)+"_addedRa_Npeaks_man.txt"
-        outfile = open(outfilename,'w') 
-        outfile.write('%i' % Npeaks)
         outfile.close()   
     
         print('iamp:',iamp)

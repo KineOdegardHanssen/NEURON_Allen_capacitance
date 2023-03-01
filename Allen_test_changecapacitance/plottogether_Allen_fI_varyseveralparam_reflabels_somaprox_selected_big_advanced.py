@@ -22,6 +22,7 @@ def reldiffs(fother,f1,iother,i1):
     rdout  = np.array(rdout)
     return iout, rdout
 
+# change the default font family
 plt.rcParams.update({'font.family':'Arial'})
 
 plt.rc('xtick',labelsize=14)
@@ -42,8 +43,6 @@ ax4 = plt.subplot(gs[1, 0:2])
 ax5 = plt.subplot(gs[1, 2:4])
 ax6 = plt.subplot(gs[1, 4:6])
 
-fig.suptitle('fI-curves, Allen model 1',fontsize=20)
-
 ax1.set_title(r'A',loc='left',fontsize=18)
 ax2.set_title(r'B',loc='left',fontsize=18)
 ax3.set_title(r'C',loc='left',fontsize=18)
@@ -58,7 +57,7 @@ idur       = 2000 # ms
 idelay     = 100
 v_init     = -86.5 # mV
 Ra         = 150
-somasize   = 10  
+somasize   = 10
 dendlen    = 1000
 denddiam   = 1
 nsegments  = 200 
@@ -67,13 +66,13 @@ spikedurat = -40
 varymech = 'None' # 'Na' # 'K' # 'pas'
 namestring = ''
 if varymech=='Na':
-    varyE = 50 
+    varyE = 50 #[40,50,53,60,70] 
     namestring = namestring + 'ENa'+str(varyE)
 elif varymech=='K':
     varyE = -107 
     namestring = namestring + 'EK'+str(varyE)
 elif varymech=='pas': 
-    varyE = -77 
+    varyE = -77
     namestring = namestring + 'EK'+str(varyE)
 elif varymech=='None':
     varyE = 'None'
@@ -121,8 +120,8 @@ ECa0 = np.zeros(NECa)
 for i in range(NECa):
     ECa0[i] = prefactor*np.log(varycao[i]/cai0)
 
-idelay = 100  #     ms #
-afteri = 100  #     ms # 
+idelay = 100  # ms 
+afteri = 100  # ms  
 
 tstop_i = idur+afteri+idelay
 
@@ -131,7 +130,7 @@ i_master = [0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,0.12,0.13,0.
 NI  = len(i_master)
 Ng = len(varygs)
 
-i_master_everywhere                      = []
+i_master_everywhere = []
 
 infolder      = 'figures/%i/' % (testmodel)
 vrestfolder   = infolder 
@@ -162,10 +161,10 @@ f_5_all = []
 
 ### ax1
 ax1.set_title(r'Vary $E_{\mathregular{Na}}$, $\bar{g}_{\mathregular{Kv2like}}$ and $\bar{g}_{\mathregular{SK}}$',fontsize=18)
-Nspikes_everywhere_Na_Kv2l_SK       = []
-I_Nspikes_everywhere_Na_Kv2l_SK     = []
-Nspikes_sprx_Na_Kv2l_SK             = []
-I_Nspikes_sprx_Na_Kv2l_SK           = []
+Nspikes_everywhere_Na_Kv2l_SK   = []
+I_Nspikes_everywhere_Na_Kv2l_SK = []
+Nspikes_sprx_Na_Kv2l_SK         = []
+I_Nspikes_sprx_Na_Kv2l_SK       = []
 for k in range(Ng):
     cm = cms[k]
     changedg = varygs[k]
@@ -215,8 +214,8 @@ for k in range(Ng):
 ## ax2
 
 ax2.set_title(r'Vary $E_{\mathregular{Ca}}(0)$ and $\bar{g}_{\mathregular{SK}}$',fontsize=18)
-Nspikes_sprx_cao_SK         = []
-I_Nspikes_sprx_cao_SK       = []
+Nspikes_sprx_cao_SK   = []
+I_Nspikes_sprx_cao_SK = []
 for k in range(Ng):
     cm       = cms[k]
     cao      = varycao[k] 
@@ -265,8 +264,8 @@ for k in range(Ng):
 ## ax3
 
 ax3.set_title(r'Vary $E_{\mathregular{Ca}}(0)$, $\bar{g}_{\mathregular{Kv2like}}$ and $\bar{g}_{\mathregular{SK}}$',fontsize=18)
-Nspikes_sprx_Na_CaHVA         = []
-I_Nspikes_sprx_Na_CaHVA       = []
+Nspikes_sprx_Na_CaHVA   = []
+I_Nspikes_sprx_Na_CaHVA = []
 for k in range(Ng):
     cm = cms[k]
     thiscao  = varycao[k]
@@ -316,8 +315,8 @@ for k in range(Ng):
 ## ax4
 
 ax4.set_title(r'Vary $\bar{g}_{\mathregular{Kv2like}}$ and $\bar{g}_{\mathregular{SK}}$',fontsize=18)
-Nspikes_sprx_Na_CaHVA         = []
-I_Nspikes_sprx_Na_CaHVA       = []
+Nspikes_sprx_Na_CaHVA   = []
+I_Nspikes_sprx_Na_CaHVA = []
 for k in range(Ng):
     cm = cms[k]
     thiscao  = varycao[k]
@@ -367,8 +366,8 @@ for k in range(Ng):
 ## ax5
 
 ax5.set_title(r'Vary $E_{\mathregular{Ca}}(0)$, $E_{\mathregular{Na}}$, $\bar{g}_{\mathregular{Kv2like}}$ and $\bar{g}_{\mathregular{SK}}$',fontsize=18)
-Nspikes_sprx_Na_CaHVA         = []
-I_Nspikes_sprx_Na_CaHVA       = []
+Nspikes_sprx_Na_CaHVA   = []
+I_Nspikes_sprx_Na_CaHVA = []
 for k in range(Ng):
     cm = cms[k]
     thiscao  = varycao[k]
@@ -436,7 +435,7 @@ for i in range(Ncms-1):
         if len(rdi)>0:
             lastdiff.append(rdi[-1])
         else:
-            lastdiff.append(0) # Hardcoding for plotting
+            lastdiff.append(0)
     lastdiffs.append(lastdiff)
 
 barWidth = 0.1
@@ -458,11 +457,11 @@ ax6.bar(br3, lastdiffs[2],width=barWidth,color=colors[3],label=combos[3])
 ax6.bar(br4, lastdiffs[3],width=barWidth,color=colors[4],label=combos[4])
 
 ax6.axhline(y=0.38,color='k',linestyle='--',linewidth=1.0)
-#ax6.axhline(y=0.43,color='k',linestyle='--',linewidth=1.0)
 plt.xticks(brcenter, ['A','B','C','D','E'])
 ax6.set_xlabel('Combination',fontsize=14)
 ax6.set_ylabel(r'Relative difference at max. current',fontsize=14)
 ax6.set_title(r'Difference from default',fontsize=18)
+ax6.set_ylim([0,0.465])
 
 ## xlabel ##
 ax1.set_xlabel('$I$ (nA)',fontsize=14)
@@ -484,8 +483,7 @@ ax4.legend(loc='upper left',ncol=1)
 ax5.legend(loc='upper left',ncol=1)
 ax6.legend(loc='upper left',ncol=4,fontsize=15)
 
-
-fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+fig.tight_layout()
 plt.savefig(plotname)
 
 plt.show()

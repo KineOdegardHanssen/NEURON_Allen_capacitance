@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import gridspec
 
+# change the default font family
 plt.rcParams.update({'font.family':'Arial'})
 
 plt.rc('xtick',labelsize=14)
@@ -95,6 +96,9 @@ i_master_everywhere_all_gHVA   = []
 Nspikes_everywhere_all_gHVA    = []
 I_Nspikes_everywhere_all_gHVA  = []
 
+i_master_sprx_all_gHVA         = []
+Nspikes_sprx_all_gHVA          = []
+I_Nspikes_sprx_all_gHVA        = []
 
 for testmodel in testmodels:
     i_master_everywhere_gHVA   = []
@@ -114,7 +118,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringHVA,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -132,7 +135,6 @@ for testmodel in testmodels:
                 Nspikes_everywhere_gHVA.append(Nspikes)
                 I_Nspikes_everywhere_gHVA.append(I_Nspikes)
                 
-                print('-------------------------------------')
                 gHVA_legends.append([cm,g])
     Nspikes_everywhere_all_gHVA.append(Nspikes_everywhere_gHVA) 
     I_Nspikes_everywhere_all_gHVA.append(I_Nspikes_everywhere_gHVA)
@@ -162,8 +164,6 @@ ax8 = plt.subplot(gs[2, 2:4])
 ax9 = plt.subplot(gs[2, 4:6])
 ax10 = plt.subplot(gs[3, 1:3])
 ax11 = plt.subplot(gs[3, 3:5])
-
-fig.suptitle(r'Frequency $f$ vs $I$, Allen model 2',fontsize=20)
 
 ax1.set_title(r'A',loc='left',fontsize=18)
 ax2.set_title(r'B',loc='left',fontsize=18)
@@ -207,6 +207,9 @@ i_master_everywhere_all_gNaV   = []
 Nspikes_everywhere_all_gNaV    = []
 I_Nspikes_everywhere_all_gNaV  = []
 
+i_master_sprx_all_gNaV         = []
+Nspikes_sprx_all_gNaV          = []
+I_Nspikes_sprx_all_gNaV        = []
 
 gNaV_legends = []
 for testmodel in testmodels:
@@ -218,7 +221,6 @@ for testmodel in testmodels:
     vrestfolder   = infolder 
     for cm in cms:
         for g in varygNaV:
-            print('g:',g)
             if cm!=1.0:
                 print('cm!=1.0:',cm,'CONTINUE')
                 continue
@@ -230,7 +232,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringNaV,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -249,7 +250,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gNaV.append(I_Nspikes)
                 
                 gNaV_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gNaV.append(Nspikes_everywhere_gNaV)
     I_Nspikes_everywhere_all_gNaV.append(I_Nspikes_everywhere_gNaV)
     
@@ -264,8 +264,6 @@ for j in range(NgNaV):
         thelinewidth = defaultwidth
     else:
         thelinewidth = mylinewidth
-    print('Nspikes_everywhere_this[j]:',Nspikes_everywhere_this[j])
-    print('gNaV_legends[j]:',gNaV_legends[j])
     if np.sum(Nspikes_everywhere_this[j])>0:
         ### Everywhere:
         ax3.plot(I_Nspikes_everywhere_this[j], Nspikes_everywhere_this[j],color=navcolors[j],label=r'%.1f$\bar{g}_X$' % (theselegends_nav[1]), linewidth=thelinewidth)
@@ -299,7 +297,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringIh,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -318,7 +315,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gIh.append(I_Nspikes)
                 
                 gIh_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gIh.append(Nspikes_everywhere_gIh)
     I_Nspikes_everywhere_all_gIh.append(I_Nspikes_everywhere_gIh)
 
@@ -366,7 +362,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringKd,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -385,7 +380,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gKd.append(I_Nspikes)
                 
                 gKd_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gKd.append(Nspikes_everywhere_gKd)
     I_Nspikes_everywhere_all_gKd.append(I_Nspikes_everywhere_gKd)
 
@@ -433,7 +427,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringKv2like,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -452,7 +445,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gKv2like.append(I_Nspikes)
                 
                 gKv2like_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gKv2like.append(Nspikes_everywhere_gKv2like)
     I_Nspikes_everywhere_all_gKv2like.append(I_Nspikes_everywhere_gKv2like)
 
@@ -502,7 +494,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringKv31,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -521,7 +512,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gKv31.append(I_Nspikes)
                 
                 gKv31_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gKv31.append(Nspikes_everywhere_gKv31)
     I_Nspikes_everywhere_all_gKv31.append(I_Nspikes_everywhere_gKv31)
 
@@ -572,7 +562,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringKT,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 try:
                     infile_Nspikes = open(infilename_Nspikes,'r')
@@ -595,7 +584,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gKT.append(I_Nspikes)
                 
                 gKT_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gKT.append(Nspikes_everywhere_gKT)
     I_Nspikes_everywhere_all_gKT.append(I_Nspikes_everywhere_gKT)
 
@@ -643,7 +631,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringImv2,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -662,7 +649,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gImv2.append(I_Nspikes)
                 
                 gImv2_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gImv2.append(Nspikes_everywhere_gImv2)
     I_Nspikes_everywhere_all_gImv2.append(I_Nspikes_everywhere_gImv2)
 
@@ -710,7 +696,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringSK,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -729,7 +714,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gSK.append(I_Nspikes)
                 
                 gSK_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gSK.append(Nspikes_everywhere_gSK)
     I_Nspikes_everywhere_all_gSK.append(I_Nspikes_everywhere_gSK)
 
@@ -777,7 +761,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringCaLVA,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -796,7 +779,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gCaLVA.append(I_Nspikes)
                 
                 gCaLVA_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gCaLVA.append(Nspikes_everywhere_gCaLVA)
     I_Nspikes_everywhere_all_gCaLVA.append(I_Nspikes_everywhere_gCaLVA)
 
@@ -844,7 +826,6 @@ for testmodel in testmodels:
                 
                 # Set names
                 infilename_Nspikes = infolder+'%s_%i_cmfall'%(namestringpas,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.txt'
-                print('infilename_Nspikes:',infilename_Nspikes)
                 # Read files
                 infile_Nspikes = open(infilename_Nspikes,'r')
                 
@@ -863,7 +844,6 @@ for testmodel in testmodels:
                 I_Nspikes_everywhere_gpas.append(I_Nspikes)
                 
                 gpas_legends.append([cm,g])
-    print('-------------------------------------')
     Nspikes_everywhere_all_gpas.append(Nspikes_everywhere_gpas)
     I_Nspikes_everywhere_all_gpas.append(I_Nspikes_everywhere_gpas)
 
@@ -885,7 +865,7 @@ ax11.set_xlabel('$I$ (nA)',fontsize=14)
 ax11.set_ylabel('$f$ (Hz)',fontsize=14)
 ax11.legend(loc='upper left',ncol=1)
 
-fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+fig.tight_layout()
 
 plt.savefig(plotname)
 

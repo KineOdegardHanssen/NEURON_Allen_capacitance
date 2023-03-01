@@ -25,7 +25,7 @@ def manual(filename,idelay,idur,spikedurat):
     vmin = min(voltage) 
     deltav = vmax-vmin
     vthr  = -20   # If there is a peak above this value, we count it 
-    durthr = spikedurat # Height at which we measure the duration.
+    durthr = spikedurat # Height at which we measure the duration. 
     Npeaks = 0
     peakmins = []
     peakvals = []
@@ -80,15 +80,20 @@ def manual(filename,idelay,idur,spikedurat):
     
     dur = []
     isi = []
+    amps = []
+    Namps = min([len(peakmins),len(peakvals)])
     Ndur = min([len(passtimes_up),len(passtimes_down)])
     for i in range(Ndur):
         dur.append(passtimes_down[i]-passtimes_up[i])
+    for i in range(Namps):
+        amps.append(peakvals[i]-peakmins[i])
     for i in range(1,len(peaktimes)):
         isi.append(peaktimes[i]-peaktimes[i-1])
     
     ## Avg and rms:
     peakmins_avg, peakmins_rms = avg_and_rms(peakmins)
     peakvals_avg, peakvals_rms = avg_and_rms(peakvals)
+    amps_avg, amps_rms = avg_and_rms(amps)
     dur_avg, dur_rms = avg_and_rms(dur)
     isi_avg, isi_rms = avg_and_rms(isi)
     
@@ -106,7 +111,7 @@ def manual(filename,idelay,idur,spikedurat):
         else:
             print('The neuron is firing!')
     
-    return Npeaks, peaktimes, peakmins_avg, peakmins_rms, peakvals_avg,  peakvals_rms, dur_avg, dur_rms, isi_avg, isi_rms, isi
+    return Npeaks, peaktimes, peakmins_avg, peakmins_rms, peakvals_avg,  peakvals_rms, dur_avg, dur_rms, isi_avg, isi_rms, isi, dur, amps_avg, amps_rms
 
 if __name__ == '__main__':
     testmodel  = 478513437 # 488462965 # 478513407 #
@@ -115,7 +120,7 @@ if __name__ == '__main__':
     idelay     = 100
     v_init     = -83.7 # mV
     Ra         = 100
-    somasize   = 10
+    somasize   = 10 
     dendlen    = 1000
     denddiam   = 1
     nsegments  = 200 
@@ -128,7 +133,7 @@ if __name__ == '__main__':
     varyE_bool = False # True # 
     namestring = '_cao'+str(setcao[0])
     if varymech=='Na':
-        varyE = 63 #[40,50,53,60,70]
+        varyE = 63 #[40,50,53,60,70] 
         namestring = namestring + 'ENa'+str(varyE)
     elif varymech=='K':
         varyE = -107 
@@ -168,7 +173,7 @@ if __name__ == '__main__':
         cm_dend = 2.83035
         cm_axon = 9.98442
     elif testmodel==488462965:
-        cm_soma = 3.31732779736 
+        cm_soma = 3.31732779736
         cm_dend = 3.31732779736
         cm_axon = 3.31732779736
     elif testmodel==478513407:
@@ -176,9 +181,9 @@ if __name__ == '__main__':
         cm_dend = 1.0
         cm_axon = 1.0
     elif testmodel==480633479:
-        cm_soma = 0.704866 
-        cm_dend = 0.704866 
-        cm_axon = 0.704866 
+        cm_soma = 0.704866
+        cm_dend = 0.704866
+        cm_axon = 0.704866
     elif testmodel==478513437:
         cm_soma = 2.34539964752
         cm_dend = 2.34539964752
@@ -227,6 +232,8 @@ if __name__ == '__main__':
     rms_AP_mins = numpy.zeros(NI)
     avg_AP_halfwidth = numpy.zeros(NI)
     rms_AP_halfwidth = numpy.zeros(NI)
+    avg_AP_amplitudes = numpy.zeros(NI)
+    rms_AP_amplitudes = numpy.zeros(NI)
     
     
     # Set names
@@ -266,6 +273,7 @@ if __name__ == '__main__':
         outfilename_APmins = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Vmin_vs_I.txt'
         outfilename_APdhw  = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_sdurat%s_vs_I.txt' % str(spikedurat)
         outfilename_ISI   = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+'_idur%i_varyiamp'% idur+'_manual_ISI_vs_I.txt'
+        outfilename_amps  = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Ampl_vs_I.txt'
         plotname_Nspikes  = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Nspikes_vs_I.png'
         plotname_APampl   = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Vmax_vs_I.png'
         plotname_APmins   = outfolder+'%s_%i_cmfsprx'%(namestring,testmodel)+str(cm)+'_idur%i_varyiamp'% idur+'_manual_Vmin_vs_I.png'
@@ -276,6 +284,7 @@ if __name__ == '__main__':
         outfile_APampl  = open(outfilename_APampl,'w')
         outfile_APmins  = open(outfilename_APmins,'w')
         outfile_APdhw   = open(outfilename_APdhw,'w')
+        outfile_amps    = open(outfilename_amps,'w')
         outfile_ISI     = open(outfilename_ISI,'w')
         thr_reached=False
         for j in range(NI):
@@ -284,7 +293,7 @@ if __name__ == '__main__':
             print('Step ', j+1, ' of', NI)
             filename = infolder+namestring+"_changecmf" + str(cm) + "_somaprox_vinit"+str(v_init)+"_addedRa.txt"
             try:
-                Nspikes[j], peaktimes, avg_AP_mins[j], rms_AP_mins[j], avg_AP_ampl[j], rms_AP_ampl[j], avg_AP_halfwidth[j], rms_AP_halfwidth[j], avg_ISI[j], rms_ISI[j], ISI = manual(filename,idelay,idur,spikedurat)     
+                Nspikes[j], peaktimes, avg_AP_mins[j], rms_AP_mins[j], avg_AP_ampl[j], rms_AP_ampl[j], avg_AP_halfwidth[j], rms_AP_halfwidth[j], avg_ISI[j], rms_ISI[j], ISI, dur, avg_AP_amplitudes[j], rms_AP_amplitudes[j] = manual(filename,idelay,idur,spikedurat)     
             except:
                 namestring2 = ''
                 if varyIh==True:
@@ -310,12 +319,13 @@ if __name__ == '__main__':
                 if vary_gpas==True: 
                     namestring2 = namestring2 + '_gpas'+str(changedg)+'p'
                 filename = infolder+namestring2+"_changecmf" + str(cm) + "_somaprox_vinit"+str(v_init)+"_addedRa.txt"
-                Nspikes[j], peaktimes, avg_AP_mins[j], rms_AP_mins[j], avg_AP_ampl[j], rms_AP_ampl[j], avg_AP_halfwidth[j], rms_AP_halfwidth[j], avg_ISI[j], rms_ISI[j], ISI = manual(filename,idelay,idur,spikedurat)     
+                Nspikes[j], peaktimes, avg_AP_mins[j], rms_AP_mins[j], avg_AP_ampl[j], rms_AP_ampl[j], avg_AP_halfwidth[j], rms_AP_halfwidth[j], avg_ISI[j], rms_ISI[j], ISI, dur, avg_AP_amplitudes[j], rms_AP_amplitudes[j] = manual(filename,idelay,idur,spikedurat)     
             if Nspikes[j]!=0:
                 thr_reached=True
                 outfile_APampl.write('%.5f %.10f %.10f\n' % (iamp,avg_AP_ampl[j],rms_AP_ampl[j]))
                 outfile_APmins.write('%.5f %.10f %.10f\n' % (iamp,avg_AP_mins[j],rms_AP_mins[j]))
                 outfile_APdhw.write('%.5f %.10f %.10f\n' % (iamp,avg_AP_halfwidth[j],rms_AP_halfwidth[j]))
+                outfile_amps.write('%.5f %.10f %.10f\n' % (iamp,avg_AP_amplitudes[j],rms_AP_amplitudes[j]))
                 outfile_ISI.write('%.5f %.10f %.10f\n' % (iamp,avg_ISI[j],rms_ISI[j]))
                 # Write all ISIs:
                 outfilename_ISI_all = outfolder+'basPV_idur%i_iamp'% (idur)+str(iamp) +'_manual_cmf'+str(cm)+'_ISIall_Cmall.txt'
@@ -329,6 +339,7 @@ if __name__ == '__main__':
         outfile_APampl.close()
         outfile_APmins.close()
         outfile_APdhw.close()
+        outfile_amps.close()
         outfile_ISI.close()
         
         # Plot results
